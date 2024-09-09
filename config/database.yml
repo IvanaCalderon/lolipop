@@ -18,12 +18,16 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
+  port: <%= ENV['DB_PORT'] %>
 
 
 
 development:
   <<: *default
-  database: lolipop_development
+  database: postgres
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -81,6 +85,6 @@ test:
 #
 production:
   <<: *default
-  database: lolipop_production
+  database: postgres
   username: lolipop
   password: <%= ENV["LOLIPOP_DATABASE_PASSWORD"] %>
