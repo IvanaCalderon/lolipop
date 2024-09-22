@@ -1,4 +1,10 @@
 <div>
-  <h1 class="font-bold text-4xl">Home</h1>
-  <p>Find me in app/views/home/index.html.erb</p>
+  <div class="grid gap-4 grid-cols-2 mt-6">
+    <% @positions.each do |position|%>
+      <%= render partial:'layouts/position_card', locals: {position: position} %>
+    <%end%>
+  </div>
+  <div class="pagination">
+    <%= paginate @positions %>
+  </div>
 </div>
