@@ -1,12 +1,13 @@
 ActiveAdmin.register Position do
 
-  permit_params :name, :risk_level, :min_salary, :max_salary, :status, :description
+  permit_params :name, :risk_level, :min_salary, :max_salary, :status, :description, :department_id
   config.per_page = 20
 
   index do
     selectable_column
     id_column
     column :name
+    column :department
     column :description do |position|
       truncate(position.description, length: 100) # Optional: Truncate long descriptions
     end
@@ -22,12 +23,14 @@ ActiveAdmin.register Position do
   end
 
   filter :name
-  filter :risk_level, as: :select, collection: Position.risk_levels.keys
-  filter :status, as: :select, collection: Position.statuses.keys # 
+  filter :department
+  filter :risk_level, as: :select, collection: Position.risk_levels.map { |key, value| [key.titleize, value] }
+  filter :status, as: :select, collection: Position.statuses.map { |key, value| [key.titleize, value] }
 
   form do |f|
     f.inputs "Position Details" do
       f.input :name
+      f.input :department, as: :select, collection: Department.active.map { |department| [department.name, department.id] }
       f.input :description, as: :text
       f.input :risk_level, as: :select, collection: Position.risk_levels.keys.map { |key| [key.humanize, key] } # Maps enum keys to their humanized versions
       f.input :min_salary
@@ -40,6 +43,7 @@ ActiveAdmin.register Position do
   show do
     attributes_table do
       row :name
+      row :department
       row :description
       row :risk_level do |position|
         position.risk_level.capitalize

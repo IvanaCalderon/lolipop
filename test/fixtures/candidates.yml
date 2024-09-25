@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  cedula: MyString
+  name: MyString
+  position: one
+  department: one
+  desired_salary: 9.99
+  recommended_by: MyString
+
+two:
+  user: two
+  cedula: MyString
+  name: MyString
+  position: two
+  department: two
+  desired_salary: 9.99
+  recommended_by: MyString

@@ -7,6 +7,11 @@ class Position < ApplicationRecord
     validates :min_salary, :max_salary, numericality: { greater_than_or_equal_to: 0 }
     validates :risk_level, inclusion: { in: risk_levels.keys }
     validates :description, presence: true, length: { maximum: 500 }
+    belongs_to :department
+
+    validates :department_id, presence: true
+
+    has_many :users
     
 
 
@@ -15,7 +20,7 @@ class Position < ApplicationRecord
 
      # Define ransackable_attributes
     def self.ransackable_attributes(auth_object = nil)
-        ["name", "risk_level", "min_salary", "max_salary", "status"]
+        ["name", "risk_level", "min_salary", "max_salary", "status", "department_id"]
     end
 
     # Optionally, define ransackable_associations if needed
