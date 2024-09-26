@@ -1,5 +1,4 @@
 class Position < ApplicationRecord
-    
     enum risk_level: { low: 0, mid: 1, high: 2 }
     enum status: { inactive: 0, active: 1 }
 
@@ -12,15 +11,15 @@ class Position < ApplicationRecord
     validates :department_id, presence: true
 
     has_many :users
-    
+
 
 
     # Ensure max_salary is greater than min_salary
     validate :max_salary_greater_than_min_salary
 
-     # Define ransackable_attributes
+    # Define ransackable_attributes
     def self.ransackable_attributes(auth_object = nil)
-        ["name", "risk_level", "min_salary", "max_salary", "status", "department_id"]
+        [ "name", "risk_level", "min_salary", "max_salary", "status", "department_id" ]
     end
 
     # Optionally, define ransackable_associations if needed

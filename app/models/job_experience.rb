@@ -1,5 +1,5 @@
 class JobExperience < ApplicationRecord
-    belongs_to :user
+    belongs_to :candidate
 
     validates :company, :position, :start_date, :end_date, :salary, presence: true
     validate :start_date_before_end_date

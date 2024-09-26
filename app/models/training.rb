@@ -1,5 +1,5 @@
 class Training < ApplicationRecord
-    belongs_to :user
+    belongs_to :candidate
     enum level: { grado: 0, post_grado: 1, maestria: 2, doctorado: 3, tecnico: 4, gestion: 5 }
 
     validates :description, :level, :start_date, :end_date, :institution, presence: true
@@ -12,5 +12,4 @@ class Training < ApplicationRecord
         errors.add(:start_date, "must be before the end date")
         end
     end
-
 end
