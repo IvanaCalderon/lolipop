@@ -3,6 +3,7 @@ class Candidate < ApplicationRecord
   belongs_to :position
   belongs_to :department # Esto asegura que cada candidato está relacionado con un departamento
   has_and_belongs_to_many :competencies
+  has_and_belongs_to_many :languages
   has_many :trainings, dependent: :destroy
   has_many :job_experiences, dependent: :destroy
 
@@ -15,7 +16,7 @@ class Candidate < ApplicationRecord
   before_validation :set_department
 
   def self.ransackable_attributes(auth_object = nil)
-    [ "cedula", "name", "position_id", "desired_salary", "recommended_by", "user_id", "department_id", "position_id", "competencies_id", "trainings_id", "job_experiences_id" ]
+    [ "cedula", "name", "position_id", "desired_salary", "recommended_by", "user_id", "department_id", "position_id", "competencies_id", "trainings_id", "job_experiences_id", "languages_id" ]
   end
 
   # Optionally, define ransackable_associations if needed

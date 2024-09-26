@@ -1,6 +1,8 @@
 class Language < ApplicationRecord
     enum status: { inactive: 0, active: 1 }
 
+    has_and_belongs_to_many :candidates
+
     validates :name, presence: true
     validates :status, inclusion: { in: statuses.keys }
 

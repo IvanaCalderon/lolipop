@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_25_175043) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_26_013302) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -64,6 +64,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_25_175043) do
   create_table "candidates_competencies", id: false, force: :cascade do |t|
     t.bigint "candidate_id", null: false
     t.bigint "competency_id", null: false
+  end
+
+  create_table "candidates_languages", id: false, force: :cascade do |t|
+    t.bigint "candidate_id", null: false
+    t.bigint "language_id", null: false
   end
 
   create_table "competencies", force: :cascade do |t|
