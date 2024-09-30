@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_26_013302) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_30_151015) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -46,18 +46,24 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_013302) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
   end
 
+  create_table "applications", force: :cascade do |t|
+    t.bigint "candidate_id", null: false
+    t.bigint "position_id", null: false
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["candidate_id"], name: "index_applications_on_candidate_id"
+    t.index ["position_id"], name: "index_applications_on_position_id"
+  end
+
   create_table "candidates", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "cedula"
     t.string "name"
-    t.bigint "position_id", null: false
-    t.bigint "department_id", null: false
     t.decimal "desired_salary"
     t.string "recommended_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["department_id"], name: "index_candidates_on_department_id"
-    t.index ["position_id"], name: "index_candidates_on_position_id"
     t.index ["user_id"], name: "index_candidates_on_user_id"
   end
 
@@ -147,8 +153,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_26_013302) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "candidates", "departments"
-  add_foreign_key "candidates", "positions"
+  add_foreign_key "applications", "candidates"
+  add_foreign_key "applications", "positions"
   add_foreign_key "candidates", "users"
   add_foreign_key "job_experiences", "candidates"
   add_foreign_key "positions", "departments"

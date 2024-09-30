@@ -1,0 +1,25 @@
+
+<div class="nested-fields">
+  <div class="field">
+    <%= f.label :description, "Training Description" %>
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :level %>
+    <%= f.select :level, Training.levels.keys.map { |key| [key.humanize, key] } %>
+  </div>
+  <div class="field">
+    <%= f.label :start_date %>
+    <%= f.date_select :start_date %>
+  </div>
+  <div class="field">
+    <%= f.label :end_date %>
+    <%= f.date_select :end_date %>
+  </div>
+  <div class="field">
+    <%= f.label :institution %>
+    <%= f.text_field :institution %>
+  </div>
+  <%= link_to "Remove Training", '#', class: "remove-training btn btn-danger" %>
+  <%= f.hidden_field :_destroy %>
+</div>

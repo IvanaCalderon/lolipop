@@ -1,0 +1,24 @@
+<div class="nested-fields">
+  <div class="field">
+    <%= f.label :company, "Company" %>
+    <%= f.text_field :company %>
+  </div>
+  <div class="field">
+    <%= f.label :position, "Position" %>
+    <%= f.text_field :position %>
+  </div>
+  <div class="field">
+    <%= f.label :start_date %>
+    <%= f.date_select :start_date %>
+  </div>
+  <div class="field">
+    <%= f.label :end_date %>
+    <%= f.date_select :end_date %>
+  </div>
+  <div class="field">
+    <%= f.label :salary %>
+    <%= f.number_field :salary %>
+  </div>
+  <%= link_to "Remove Job Experience", '#', class: "remove-job-experience btn btn-danger" %>
+  <%= f.hidden_field :_destroy %>
+</div>

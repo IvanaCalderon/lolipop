@@ -1,0 +1,75 @@
+<h1>Apply for <%= @position.name %></h1>
+
+<%= form_with model: @application, url: applications_path(position_id: @position.id), local: true do |f| %>
+  <%= f.fields_for :candidate, @candidate do |candidate_form| %>
+    
+    <!-- Información del Candidato -->
+    <div class="field">
+      <%= candidate_form.label :cedula %>
+      <%= candidate_form.text_field :cedula %>
+    </div>
+
+    <div class="field">
+      <%= candidate_form.label :name %>
+      <%= candidate_form.text_field :name %>
+    </div>
+
+    <div class="field">
+      <%= candidate_form.label :desired_salary %>
+      <%= candidate_form.number_field :desired_salary %>
+    </div>
+
+    <div class="field">
+      <%= candidate_form.label :recommended_by %>
+      <%= candidate_form.text_field :recommended_by %>
+    </div>
+    
+
+    <div class="field">
+      <%= candidate_form.label :languages %>
+      <%= candidate_form.collection_check_boxes :language_ids, Language.all, :id, :name %>
+    </div>
+
+    <div class="field">
+      <%= candidate_form.label :competencies %>
+      <%= candidate_form.collection_check_boxes :competency_ids, Competency.all, :id, :description %>
+    </div>
+
+    <!-- Contenedor para los Trainings (vacío al inicio) -->
+    <h3>Trainings</h3>
+    <div id="trainings-container"></div>
+
+    <!-- Botón para agregar Training -->
+    <%= link_to "Add Training", '#', id: "add-training", class: "btn btn-secondary" %>
+
+    <!-- Contenedor para las Job Experiences (vacío al inicio) -->
+    <h3>Job Experiences</h3>
+    <div id="job-experiences-container"></div>
+
+    <!-- Botón para agregar Job Experience -->
+    <%= link_to "Add Job Experience", '#', id: "add-job-experience", class: "btn btn-secondary" %>
+
+    <!-- Template oculto para nuevos Trainings -->
+<div id="new-training-template" style="display: none;">
+  <%= candidate_form.fields_for :trainings, @candidate.trainings.build, child_index: "new_trainings" do |t_form| %>
+    <%= render 'training_fields', f: t_form %>
+  <% end %>
+</div>
+
+<!-- Template oculto para nuevas Job Experiences -->
+<div id="new-job-experience-template" style="display: none;">
+  <%= candidate_form.fields_for :job_experiences, @candidate.job_experiences.build, child_index: "new_job_experiences" do |j_form| %>
+    <%= render 'job_experience_fields', f: j_form %>
+  <% end %>
+</div>
+
+  <% end %>
+
+  <!-- Botón de Submit -->
+  <div class="actions">
+    <%= f.submit "Submit Application" %>
+  </div>
+  
+
+  
+<% end %>

@@ -1,5 +1,5 @@
 ActiveAdmin.register Candidate do
-   permit_params :cedula, :name, :user_id, :department_id, :position_id, :desired_salary, :recommended_by, competency_ids: [], language_ids: [],
+   permit_params :cedula, :name, :user_id, :desired_salary, :recommended_by, competency_ids: [], language_ids: [],
                 trainings_attributes: [ :id, :description, :level, :start_date, :end_date, :institution, :_destroy ],
                 job_experiences_attributes: [ :id, :company, :position, :start_date, :end_date, :salary, :_destroy ]
 
@@ -18,7 +18,6 @@ ActiveAdmin.register Candidate do
       f.input :user, as: :select, collection: User.all.map { |u| [ u.email, u.id ] }
       f.input :cedula
       f.input :name
-      f.input :position, as: :select, collection: Position.active.map { |p| [ p.name, p.id ] }, include_blank: false
       f.input :desired_salary
       f.input :recommended_by
       f.input :languages, as: :check_boxes, collection: Language.active.map { |l| [ l.name, l.id ] }, input_html: { multiple: true }
@@ -53,8 +52,6 @@ ActiveAdmin.register Candidate do
       row :user
       row :cedula
       row :name
-      row :position
-      row :department
       row :desired_salary
       row :recommended_by
       row "Idiomas" do |candidate|

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :applications, only: [:new, :create]
   
   ActiveAdmin.routes(self)
   devise_for :users
