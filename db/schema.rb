@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_30_151015) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_01_195324) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -96,6 +96,20 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_151015) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "employees", force: :cascade do |t|
+    t.string "cedula"
+    t.string "name"
+    t.date "hire_date"
+    t.bigint "position_id", null: false
+    t.decimal "monthly_salary"
+    t.integer "status"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["position_id"], name: "index_employees_on_position_id"
+    t.index ["user_id"], name: "index_employees_on_user_id"
+  end
+
   create_table "job_experiences", force: :cascade do |t|
     t.string "company"
     t.string "position"
@@ -156,6 +170,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_30_151015) do
   add_foreign_key "applications", "candidates"
   add_foreign_key "applications", "positions"
   add_foreign_key "candidates", "users"
+  add_foreign_key "employees", "positions"
+  add_foreign_key "employees", "users"
   add_foreign_key "job_experiences", "candidates"
   add_foreign_key "positions", "departments"
   add_foreign_key "trainings", "candidates"
