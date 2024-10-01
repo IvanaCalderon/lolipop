@@ -1,75 +1,104 @@
-<h1>Apply for <%= @position.name %></h1>
 
-<%= form_with model: @application, url: applications_path(position_id: @position.id), local: true do |f| %>
-  <%= f.fields_for :candidate, @candidate do |candidate_form| %>
-    
-    <!-- Información del Candidato -->
-    <div class="field">
-      <%= candidate_form.label :cedula %>
-      <%= candidate_form.text_field :cedula %>
+
+<div class="w-full">
+  <%= form_with model: @application, url: applications_path(position_id: @position.id), local: true do |f| %>
+    <h1 class="text-2xl font-bold mb-4">Apply for <%= @position.name %></h1>
+    <%= f.fields_for :candidate, @candidate do |candidate_form| %>
+
+      <!-- Información del Candidato -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        
+        <div class="field">
+          <%= candidate_form.label :cedula, class: "block text-sm font-medium text-gray-700" %>
+          <%= candidate_form.text_field :cedula, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+
+        <div class="field">
+          <%= candidate_form.label :name, class: "block text-sm font-medium text-gray-700" %>
+          <%= candidate_form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+
+        <div class="field">
+          <%= candidate_form.label :desired_salary, class: "block text-sm font-medium text-gray-700" %>
+          <%= candidate_form.number_field :desired_salary, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+
+        <div class="field">
+          <%= candidate_form.label :recommended_by, class: "block text-sm font-medium text-gray-700" %>
+          <%= candidate_form.text_field :recommended_by, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+        
+      </div>
+
+      <!-- Full width fields for checkboxes -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="field mb-6">
+          <%= candidate_form.label :languages, class: "block text-sm font-medium text-gray-700" %>
+          <%= candidate_form.collection_check_boxes :language_ids, Language.all, :id, :name do |b| %>
+            <div class="flex items-center">
+              <%= b.check_box(class: "h-4 w-4 text-indigo-600 border-gray-300 rounded") %>
+              <%= b.label(class: "ml-2 block text-sm text-gray-700") %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="field mb-6">
+          <%= candidate_form.label :competencies, class: "block text-sm font-medium text-gray-700" %>
+          <%= candidate_form.collection_check_boxes :competency_ids, Competency.all, :id, :description do |b| %>
+            <div class="flex items-center">
+              <%= b.check_box(class: "h-4 w-4 text-indigo-600 border-gray-300 rounded") %>
+              <%= b.label(class: "ml-2 block text-sm text-gray-700") %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <!-- Contenedor para los Trainings (vacío al inicio) -->
+          <h3 class="text-lg font-medium mb-2">Trainings</h3>
+          <div id="trainings-container" class="mb-4">
+            <%= candidate_form.fields_for :trainings do |training_form| %>
+              <%= render 'training_fields', f: training_form %>
+            <% end %>
+          </div>
+
+          <!-- Botón para agregar Training -->
+          <%= link_to "Add Training", '#', id: "add-training", class: "btn btn-secondary mb-4 text-indigo-600 hover:underline" %>
+        </div>
+        <!-- Contenedor para las Job Experiences (vacío al inicio) -->
+        <div>
+          <h3 class="text-lg font-medium mb-2">Job Experiences</h3>
+          <div id="job-experiences-container" class="mb-4">
+            <%= candidate_form.fields_for :job_experiences do |job_experience_form| %>
+              <%= render 'job_experience_fields', f: job_experience_form %>
+            <% end %>
+          </div>
+
+          <!-- Botón para agregar Job Experience -->
+          <%= link_to "Add Job Experience", '#', id: "add-job-experience", class: "btn btn-secondary mb-4 text-indigo-600 hover:underline" %>
+        </div>
+      </div>
+      <!-- Template oculto para nuevos Trainings -->
+      <div id="new-training-template" style="display: none;">
+        <%= candidate_form.fields_for :trainings, @candidate.trainings.build, child_index: "new_trainings" do |t_form| %>
+          <%= render 'training_fields', f: t_form %>
+        <% end %>
+      </div>
+
+      <!-- Template oculto para nuevas Job Experiences -->
+      <div id="new-job-experience-template" style="display: none;">
+        <%= candidate_form.fields_for :job_experiences, @candidate.job_experiences.build, child_index: "new_job_experiences" do |j_form| %>
+          <%= render 'job_experience_fields', f: j_form %>
+        <% end %>
+      </div>
+
+    <% end %>
+
+    <!-- Botón de Submit -->
+    <div class="actions">
+      <%= f.submit "Submit Application", class: "w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
     </div>
 
-    <div class="field">
-      <%= candidate_form.label :name %>
-      <%= candidate_form.text_field :name %>
-    </div>
-
-    <div class="field">
-      <%= candidate_form.label :desired_salary %>
-      <%= candidate_form.number_field :desired_salary %>
-    </div>
-
-    <div class="field">
-      <%= candidate_form.label :recommended_by %>
-      <%= candidate_form.text_field :recommended_by %>
-    </div>
-    
-
-    <div class="field">
-      <%= candidate_form.label :languages %>
-      <%= candidate_form.collection_check_boxes :language_ids, Language.all, :id, :name %>
-    </div>
-
-    <div class="field">
-      <%= candidate_form.label :competencies %>
-      <%= candidate_form.collection_check_boxes :competency_ids, Competency.all, :id, :description %>
-    </div>
-
-    <!-- Contenedor para los Trainings (vacío al inicio) -->
-    <h3>Trainings</h3>
-    <div id="trainings-container"></div>
-
-    <!-- Botón para agregar Training -->
-    <%= link_to "Add Training", '#', id: "add-training", class: "btn btn-secondary" %>
-
-    <!-- Contenedor para las Job Experiences (vacío al inicio) -->
-    <h3>Job Experiences</h3>
-    <div id="job-experiences-container"></div>
-
-    <!-- Botón para agregar Job Experience -->
-    <%= link_to "Add Job Experience", '#', id: "add-job-experience", class: "btn btn-secondary" %>
-
-    <!-- Template oculto para nuevos Trainings -->
-<div id="new-training-template" style="display: none;">
-  <%= candidate_form.fields_for :trainings, @candidate.trainings.build, child_index: "new_trainings" do |t_form| %>
-    <%= render 'training_fields', f: t_form %>
   <% end %>
 </div>
-
-<!-- Template oculto para nuevas Job Experiences -->
-<div id="new-job-experience-template" style="display: none;">
-  <%= candidate_form.fields_for :job_experiences, @candidate.job_experiences.build, child_index: "new_job_experiences" do |j_form| %>
-    <%= render 'job_experience_fields', f: j_form %>
-  <% end %>
-</div>
-
-  <% end %>
-
-  <!-- Botón de Submit -->
-  <div class="actions">
-    <%= f.submit "Submit Application" %>
-  </div>
-  
-
-  
-<% end %>
