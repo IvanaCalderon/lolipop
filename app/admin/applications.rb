@@ -1,5 +1,8 @@
 ActiveAdmin.register Application do
     permit_params :status
+    filter :candidate
+    filter :position
+    filter :status, as: :select, collection: Application.statuses.map { |key, value| [ key.titleize, value ] }
 
     member_action :accept, method: :patch do
       application = Application.find(params[:id])

@@ -1,6 +1,12 @@
 ActiveAdmin.register Employee do
     permit_params :cedula, :name, :user_id, :hire_date, :department_id, :position_id, :monthly_salary, :status
-    
+
+    filter :cedula
+    filter :name
+    filter :position
+    filter :monthly_salary
+    filter :status, as: :select, collection: Employee.statuses.map { |key, value| [ key.titleize, value ] }
+
     form do |f|
         if f.object.errors.any?
         div class: "errors" do
@@ -21,10 +27,10 @@ ActiveAdmin.register Employee do
         f.input :monthly_salary
         f.input :status, as: :select, collection: Employee.statuses.keys.map { |s| [ s.humanize, s ] }
         end
-    
+
         f.actions
     end
-    
+
     show do
         attributes_table do
         row :user

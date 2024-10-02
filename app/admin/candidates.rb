@@ -3,6 +3,11 @@ ActiveAdmin.register Candidate do
                 trainings_attributes: [ :id, :description, :level, :start_date, :end_date, :institution, :_destroy ],
                 job_experiences_attributes: [ :id, :company, :position, :start_date, :end_date, :salary, :_destroy ]
 
+  filter :cedula
+  filter :name
+  filter :desired_salary
+  filter :recommended_by
+
   form do |f|
     if f.object.errors.any?
       div class: "errors" do
