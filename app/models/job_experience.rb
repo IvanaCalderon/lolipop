@@ -3,6 +3,7 @@ class JobExperience < ApplicationRecord
 
     validates :company, :position, :start_date, :end_date, :salary, presence: true
     validate :start_date_before_end_date
+    validates :salary, numericality: { greater_than: 0 }
 
     private
 

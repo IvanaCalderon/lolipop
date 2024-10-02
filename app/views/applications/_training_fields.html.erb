@@ -5,26 +5,52 @@
     <div class="field">
       <%= f.label :description, "Training Description", class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :description, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      <% if f.object.errors[:description].any? %>
+      <div class="error-message text-red-800">
+        <%= f.object.errors[:description].join(", ") %>
+      </div>
+    <% end %>
+     
     </div>
 
     <div class="field">
       <%= f.label :level, class: "block text-sm font-medium text-gray-700" %>
       <%= f.select :level, Training.levels.keys.map { |key| [key.humanize, key] }, {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      <% if f.object.errors[:level].any? %>
+      <div class="error-message text-red-800">
+        <%= f.object.errors[:level].join(", ") %>
+      </div>
+    <% end %>
     </div>
 
     <div class="field">
       <%= f.label :start_date, class: "block text-sm font-medium text-gray-700" %>
       <%= f.date_select :start_date, { start_year: Date.today.year - 50, end_year: Date.today.year + 5 }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      <% if f.object.errors[:start_date].any? %>
+      <div class="error-message text-red-800">
+        <%= f.object.errors[:start_date].join(", ") %>
+      </div>
+    <% end %>
     </div>
 
     <div class="field">
       <%= f.label :end_date, class: "block text-sm font-medium text-gray-700" %>
       <%= f.date_select :end_date, { start_year: Date.today.year - 50, end_year: Date.today.year + 5 }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      <% if f.object.errors[:end_date].any? %>
+      <div class="error-message text-red-800">
+        <%= f.object.errors[:end_date].join(", ") %>
+      </div>
+    <% end %>
     </div>
 
     <div class="field">
       <%= f.label :institution, class: "block text-sm font-medium text-gray-700" %>
       <%= f.text_field :institution, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      <% if f.object.errors[:institution].any? %>
+      <div class="error-message text-red-800">
+        <%= f.object.errors[:institution].join(", ") %>
+      </div>
+    <% end %>
     </div>
   
   </div>

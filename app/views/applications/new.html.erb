@@ -1,9 +1,19 @@
 
 
 <div class="w-full">
-  <%= form_with model: @application, url: applications_path(position_id: @position.id), local: true do |f| %>
+  <%= form_with model: @application, url: applications_path(position_id: @position.id), local: true, data: { turbo: false } do |f| %>
     <h1 class="text-2xl font-bold mb-4">Apply for <%= @position.name %></h1>
     <%= f.fields_for :candidate, @candidate do |candidate_form| %>
+    <% if @candidate.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@candidate.errors.count, "error") %> prevented this candidate from being saved:</h2>
+        <ul>
+          <% @candidate.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
       <!-- Información del Candidato -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -11,21 +21,41 @@
         <div class="field">
           <%= candidate_form.label :cedula, class: "block text-sm font-medium text-gray-700" %>
           <%= candidate_form.text_field :cedula, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          <% if @candidate.errors[:cedula].any? %>
+            <div class="error-message text-red-800">
+              <%= @candidate.errors[:cedula].join(", ") %>
+            </div>
+          <% end %>
         </div>
 
         <div class="field">
           <%= candidate_form.label :name, class: "block text-sm font-medium text-gray-700" %>
           <%= candidate_form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          <% if @candidate.errors[:name].any? %>
+            <div class="error-message text-red-800">
+              <%= @candidate.errors[:name].join(", ") %>
+            </div>
+          <% end %>
         </div>
 
         <div class="field">
           <%= candidate_form.label :desired_salary, class: "block text-sm font-medium text-gray-700" %>
           <%= candidate_form.number_field :desired_salary, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          <% if @candidate.errors[:desired_salary].any? %>
+            <div class="error-message text-red-800">
+              <%= @candidate.errors[:desired_salary].join(", ") %>
+            </div>
+          <% end %>
         </div>
 
         <div class="field">
           <%= candidate_form.label :recommended_by, class: "block text-sm font-medium text-gray-700" %>
           <%= candidate_form.text_field :recommended_by, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+          <% if @candidate.errors[:recommended_by].any? %>
+            <div class="error-message text-red-800">
+              <%= @candidate.errors[:recommended_by].join(", ") %>
+            </div>
+          <% end %>
         </div>
         
       </div>
@@ -34,7 +64,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div class="field mb-6">
           <%= candidate_form.label :languages, class: "block text-sm font-medium text-gray-700" %>
-          <%= candidate_form.collection_check_boxes :language_ids, Language.all, :id, :name do |b| %>
+          <%= candidate_form.collection_check_boxes :language_ids, Language.active, :id, :name do |b| %>
             <div class="flex items-center">
               <%= b.check_box(class: "h-4 w-4 text-indigo-600 border-gray-300 rounded") %>
               <%= b.label(class: "ml-2 block text-sm text-gray-700") %>
@@ -44,7 +74,7 @@
 
         <div class="field mb-6">
           <%= candidate_form.label :competencies, class: "block text-sm font-medium text-gray-700" %>
-          <%= candidate_form.collection_check_boxes :competency_ids, Competency.all, :id, :description do |b| %>
+          <%= candidate_form.collection_check_boxes :competency_ids, Competency.active, :id, :description do |b| %>
             <div class="flex items-center">
               <%= b.check_box(class: "h-4 w-4 text-indigo-600 border-gray-300 rounded") %>
               <%= b.label(class: "ml-2 block text-sm text-gray-700") %>

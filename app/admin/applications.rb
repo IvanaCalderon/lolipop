@@ -8,10 +8,10 @@ ActiveAdmin.register Application do
       # Cambiamos el estado a "accepted" y creamos el empleado
       if application.update(status: "accepted")
         Employee.create!(
+          user: candidate.user,
           cedula: candidate.cedula,
           name: candidate.name,
           hire_date: Date.today, # Fecha de ingreso actual
-          department: application.department, # Departamento de la aplicación
           position: application.position, # Puesto de la aplicación
           monthly_salary: candidate.desired_salary, # Salario deseado
           status: :active # El empleado está activo
