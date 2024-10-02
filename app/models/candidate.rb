@@ -1,13 +1,13 @@
 class Candidate < ApplicationRecord
   belongs_to :user
-  
+
   has_and_belongs_to_many :competencies
   has_and_belongs_to_many :languages
   has_many :trainings, dependent: :destroy
   has_many :job_experiences, dependent: :destroy
 
   validates :cedula, :name, :desired_salary, presence: true
-  validates :desired_salary, numericality: { greater_than: 0 }
+  validates :desired_salary, numericality: { greater_than_or_equal_to: 0 }
 
   accepts_nested_attributes_for :trainings, allow_destroy: true, reject_if: :all_blank
   accepts_nested_attributes_for :job_experiences, allow_destroy: true, reject_if: :all_blank
@@ -32,7 +32,7 @@ class Candidate < ApplicationRecord
   def valid_cedula_checksum
     return if cedula.blank? || !cedula.match(/\A\d{11}\z/) # Validar solo si tiene 11 dígitos
 
-    multipliers = [1, 2] # Alternar multiplicadores 1 y 2
+    multipliers = [ 1, 2 ] # Alternar multiplicadores 1 y 2
     sum = 0
 
     # Recorrer los primeros 10 dígitos y aplicar la fórmula
