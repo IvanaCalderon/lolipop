@@ -58,11 +58,49 @@ ActiveAdmin.register Application do
       f.actions
     end
 
-    show do
+    show title: proc { |application| "Application for #{application.candidate.name} - Position: #{application.position.name}" } do
       attributes_table do
         row :candidate
         row :position
         row :status
+      end
+      panel "Candidate Information" do
+        attributes_table_for application.candidate do
+          row :cedula
+          row :name
+          row :desired_salary do
+            number_to_currency(application.candidate.desired_salary)
+          end
+          row :recommended_by
+          row :languages do
+            application.candidate.languages.map(&:name).join(", ")
+          end
+          row :competencies do
+            application.candidate.competencies.map(&:description).join(", ")
+          end
+        end
+      end
+
+      panel "Job Experiences" do
+        table_for application.candidate.job_experiences do
+          column "Company", :company
+          column "Position", :position
+          column "Start Date", :start_date
+          column "End Date", :end_date
+          column "Salary" do |job|
+            number_to_currency(job.salary)
+          end
+        end
+      end
+
+      panel "Trainings" do
+        table_for application.candidate.trainings do
+          column "Description", :description
+          column "Level", :level
+          column "Institution", :institution
+          column "Start Date", :start_date
+          column "End Date", :end_date
+        end
       end
     end
   end
