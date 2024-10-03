@@ -1,24 +1,22 @@
 class ApplicationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_candidate, except: [:create]
+
   def new
     @position = Position.find(params[:position_id])
     @application = Application.new
-    
+    set_candidate
   end
 
   def create
     @position = Position.find(params[:position_id])
-    @candidate = current_user.candidate || Candidate.new(candidate_params.merge(user: current_user))
-  
+    @candidate = current_user.candidate || Candidate.create(candidate_params.merge(user: current_user))
+
     @application = Application.new(candidate: @candidate, position: @position, status: :pending)
-    puts "Parameters: #{params.inspect}" 
 
     if @candidate.valid? && @application.save
       redirect_to root_path, notice: "You have successfully applied for this position."
     else
-       puts "Candidate errors: #{@candidate.errors.full_messages}"
-    puts "Application errors: #{@application.errors.full_messages}"
+
     render :new
     end
   end
@@ -43,8 +41,8 @@ class ApplicationsController < ApplicationController
     params.require(:application).require(:candidate).permit(
       :cedula, :name, :desired_salary, :recommended_by,
       language_ids: [], competency_ids: [],
-      trainings_attributes: [:id, :description, :level, :start_date, :end_date, :institution, :_destroy],
-      job_experiences_attributes: [:id, :company, :position, :start_date, :end_date, :salary, :_destroy]
+      trainings_attributes: [ :id, :description, :level, :start_date, :end_date, :institution, :_destroy ],
+      job_experiences_attributes: [ :id, :company, :position, :start_date, :end_date, :salary, :_destroy ]
     )
   end
 end
